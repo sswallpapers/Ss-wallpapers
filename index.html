@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HD Mobile Wallpapers</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 420px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2.5rem;
+        }
+
+        .header {
+            text-align: center;
+            width: 100%;
+        }
+
+        .title {
+            font-size: 2.8rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.8rem;
+            letter-spacing: -0.5px;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: #cbd5e1;
+            font-weight: 400;
+            max-width: 300px;
+            margin: 0 auto;
+            line-height: 1.4;
+        }
+
+        .downloads-section {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .download-btn {
+            width: 100%;
+            border: none;
+            padding: 1.5rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            color: white;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .download-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.1);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .download-btn:hover::before {
+            opacity: 1;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.4);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .download-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .download-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-1 {
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+        }
+
+        .btn-2 {
+            background: linear-gradient(135deg, #ef4444, #f97316);
+        }
+
+        .btn-3 {
+            background: linear-gradient(135deg, #10b981, #06b6d4);
+        }
+
+        .btn-4 {
+            background: linear-gradient(135deg, #8b5cf6, #ec4899);
+        }
+
+        .btn-5 {
+            background: linear-gradient(135deg, #f59e0b, #84cc16);
+        }
+
+        .btn-icon {
+            font-size: 1.3rem;
+        }
+
+        .btn-text {
+            transition: opacity 0.3s;
+        }
+
+        .btn-loading {
+            width: 22px;
+            height: 22px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            position: absolute;
+            opacity: 0;
+        }
+
+        .download-btn:disabled .btn-loading {
+            opacity: 1;
+        }
+
+        .download-btn:disabled .btn-text {
+            opacity: 0;
+        }
+
+        .info-text {
+            color: #94a3b8;
+            font-size: 0.9rem;
+            text-align: center;
+            margin-top: 1rem;
+            line-height: 1.4;
+            max-width: 320px;
+        }
+
+        .counter-display {
+            color: #60a5fa;
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(15, 23, 42, 0.95);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 1.5rem;
+            animation: fadeIn 0.3s ease-out;
+            backdrop-filter: blur(8px);
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            padding: 2rem;
+            border-radius: 20px;
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+            animation: slideUp 0.4s ease-out;
+            border: 1px solid #334155;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #f1f5f9;
+        }
+
+        .modal-text {
+            color: #cbd5e1;
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+        }
+
+        .link-box {
+            background: rgba(30, 41, 59, 0.8);
+            padding: 1rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+            border: 1px solid #475569;
+            word-break: break-all;
+        }
+
+        .modal-link {
+            color: #60a5fa;
+            font-weight: 500;
+            text-decoration: none;
+            font-size: 0.95rem;
+        }
+
+        .modal-btn {
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .modal-btn:hover {
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 480px) {
+            .title {
+                font-size: 2.3rem;
+            }
+            
+            .download-btn {
+                padding: 1.3rem;
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="title">HD Mobile Wallpapers</h1>
+            <p class="subtitle">Download Servers</p>
+        </div>
+
+        <div class="downloads-section">
+            <button class="download-btn btn-1" data-ad="https://scriptscalumnychirp.com/mdfnmajyp?key=4ad78f5ba565add611f30c75e85d0d33" data-telegram="https://t.me/prewallpapersfir">
+                <span class="btn-icon"></span>
+                <span class="btn-text">Download 1</span>
+                <div class="btn-loading"></div>
+            </button>
+            <div class="counter-display" data-for="1">Next click opens Telegram in <span id="timer-1">5</span>s</div>
+
+            <button class="download-btn btn-2" data-ad="https://scriptscalumnychirp.com/mdfnmajyp?key=4ad78f5ba565add611f30c75e85d0d33" data-telegram="https://t.me/wallpaper_channel">
+                <span class="btn-icon"></span>
+                <span class="btn-text">Download 2</span>
+                <div class="btn-loading"></div>
+            </button>
+            <div class="counter-display" data-for="2">Next click opens Telegram in <span id="timer-2">5</span>s</div>
+
+            <button class="download-btn btn-3" data-ad="https://scriptscalumnychirp.com/mdfnmajyp?key=4ad78f5ba565add611f30c75e85d0d33" data-telegram="https://t.me/wallpaper_channel">
+                <span class="btn-icon"></span>
+                <span class="btn-text">Download 3</span>
+                <div class="btn-loading"></div>
+            </button>
+            <div class="counter-display" data-for="3">Next click opens Telegram in <span id="timer-3">5</span>s</div>
+
+            <button class="download-btn btn-4" data-ad="https://scriptscalumnychirp.com/mdfnmajyp?key=4ad78f5ba565add611f30c75e85d0d33" data-telegram="https://t.me/wallpaper_channel">
+                <span class="btn-icon"></span>
+                <span class="btn-text">Download 4</span>
+                <div class="btn-loading"></div>
+            </button>
+            <div class="counter-display" data-for="4">Next click opens Telegram in <span id="timer-4">5</span>s</div>
+
+            <button class="download-btn btn-5" data-ad="https://scriptscalumnychirp.com/mdfnmajyp?key=4ad78f5ba565add611f30c75e85d0d33" data-telegram="https://t.me/wallpaper_channel">
+                <span class="btn-icon"></span>
+                <span class="btn-text">Download 5</span>
+                <div class="btn-loading"></div>
+            </button>
+            <div class="counter-display" data-for="5">Next click opens Telegram in <span id="timer-5">5</span>s</div>
+        </div>
+
+        <p class="info-text">
+            Click any button to download • High quality 4K wallpapers • Optimized for all devices
+        </p>
+    </div>
+
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-content">
+            <h2 class="modal-title">Popup Blocked</h2>
+            <p class="modal-text">Please tap the link below to continue:</p>
+            <div class="link-box">
+                <a href="#" class="modal-link" id="modalLink" target="_blank"></a>
+            </div>
+            <button class="modal-btn" id="closeModal">Close</button>
+        </div>
+    </div>
+
+    <script>
+        const STORAGE_KEY = 'ad_timestamp_';
+        const WAIT_TIME = 5000; // 5 seconds in milliseconds
+        const BTN_DISABLE_TIME = 300;
+
+        const modalOverlay = document.getElementById('modalOverlay');
+        const modalLink = document.getElementById('modalLink');
+        const closeModal = document.getElementById('closeModal');
+        const downloadButtons = document.querySelectorAll('.download-btn');
+        const counters = document.querySelectorAll('.counter-display');
+
+        // Timer functions
+        function updateCounterDisplay(buttonId, remainingTime) {
+            const timerElement = document.getElementById(`timer-${buttonId}`);
+            if (timerElement) {
+                timerElement.textContent = Math.ceil(remainingTime / 1000);
+            }
+        }
+
+        function startCountdown(buttonId) {
+            const counter = document.querySelector(`.counter-display[data-for="${buttonId}"]`);
+            if (!counter) return;
+
+            counter.style.display = 'block';
+            const startTime = Date.now();
+            const endTime = startTime + WAIT_TIME;
+
+            function updateTimer() {
+                const now = Date.now();
+                const remaining = endTime - now;
+
+                if (remaining <= 0) {
+                    counter.style.display = 'none';
+                    return;
+                }
+
+                updateCounterDisplay(buttonId, remaining);
+                requestAnimationFrame(updateTimer);
+            }
+
+            updateTimer();
+        }
+
+        function openUrl(url) {
+            const newWindow = window.open(url, '_blank', 'noopener,noreferrer');
+            
+            if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
+                modalLink.textContent = url;
+                modalLink.href = url;
+                modalOverlay.style.display = 'flex';
+                return false;
+            }
+            return true;
+        }
+
+        function handleDownload(event) {
+            const button = event.currentTarget;
+            const buttonId = Array.from(downloadButtons).indexOf(button) + 1;
+            const adUrl = button.getAttribute('data-ad');
+            const telegramUrl = button.getAttribute('data-telegram');
+            const storageKey = STORAGE_KEY + buttonId;
+
+            // Disable button temporarily
+            button.disabled = true;
+            setTimeout(() => {
+                button.disabled = false;
+            }, BTN_DISABLE_TIME);
+
+            const lastClickTime = localStorage.getItem(storageKey);
+            const currentTime = Date.now();
+
+            if (lastClickTime && (currentTime - parseInt(lastClickTime) >= WAIT_TIME)) {
+                // Time has passed, open Telegram
+                openUrl(telegramUrl);
+                localStorage.removeItem(storageKey); // Clear after successful Telegram open
+            } else if (!lastClickTime) {
+                // First click, open AD
+                if (openUrl(adUrl)) {
+                    localStorage.setItem(storageKey, currentTime.toString());
+                    startCountdown(buttonId);
+                }
+            } else {
+                // Clicked too soon, show countdown
+                const timePassed = currentTime - parseInt(lastClickTime);
+                const timeLeft = WAIT_TIME - timePassed;
+                
+                if (timeLeft > 0) {
+                    // Update counter display
+                    updateCounterDisplay(buttonId, timeLeft);
+                    const counter = document.querySelector(`.counter-display[data-for="${buttonId}"]`);
+                    if (counter) {
+                        counter.style.display = 'block';
+                    }
+                }
+            }
+        }
+
+        function closeModalHandler() {
+            modalOverlay.style.display = 'none';
+        }
+
+        // Initialize countdown displays for buttons that were recently clicked
+        function initializeCountdowns() {
+            downloadButtons.forEach((button, index) => {
+                const buttonId = index + 1;
+                const storageKey = STORAGE_KEY + buttonId;
+                const lastClickTime = localStorage.getItem(storageKey);
+
+                if (lastClickTime) {
+                    const currentTime = Date.now();
+                    const timePassed = currentTime - parseInt(lastClickTime);
+                    const timeLeft = WAIT_TIME - timePassed;
+
+                    if (timeLeft > 0) {
+                        startCountdown(buttonId);
+                    } else {
+                        // Time has passed, clear the storage
+                        localStorage.removeItem(storageKey);
+                    }
+                }
+            });
+        }
+
+        // Event listeners
+        downloadButtons.forEach(button => {
+            button.addEventListener('click', handleDownload);
+        });
+
+        closeModal.addEventListener('click', closeModalHandler);
+        modalOverlay.addEventListener('click', (e) => {
+            if (e.target === modalOverlay) closeModalHandler();
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modalOverlay.style.display === 'flex') {
+                closeModalHandler();
+            }
+        });
+
+        // Initialize on page load
+        initializeCountdowns();
+    </script>
+</body>
+</html>
